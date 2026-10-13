@@ -14,6 +14,7 @@ python3 vaso.py --no-browser # sin abrir navegador
 python3 vaso.py --test       # autocomprobación (asserts de advise() y parse()); imprime "ok"
 python3 vaso.py --json       # estado de la sesión más reciente por stdout (lo consume el applet)
 node --check "cinnamon/vaso-contexto@d4vram/applet.js"   # solo sintaxis del applet
+cinnamon/empaquetar.sh       # monta en dist/ el paquete para Cinnamon Spices
 ```
 
 Variables de entorno: `VASO_PORT` (puerto, por defecto 8765) y `CLAUDE_CONFIG_DIR` (si las sesiones no están en `~/.claude`).
@@ -33,7 +34,8 @@ Endpoints: `GET /api/sessions`, `GET /api/state?s=<proyecto/uuid.jsonl>&limit=<n
 
 `cinnamon/vaso-contexto@d4vram/` es un applet de panel (CJS, no Node: usa `imports.*`, no `require`). Tampoco calcula nada: cada 10 s ejecuta `python3 vaso.py --json` y pinta porcentaje, icono y desplegable. No necesita el servidor en marcha.
 
-- Se instala como enlace simbólico en `~/.local/share/cinnamon/applets/`; localiza `vaso.py` con `metadata.path/../../vaso.py`, así que mover la carpeta `cinnamon/` rompe esa ruta.
+- Se instala como enlace simbólico en `~/.local/share/cinnamon/applets/`; localiza `vaso.py` primero en `metadata.path/vaso.py` (paquete de Spices) y si no en `metadata.path/../../vaso.py` (desarrollo), así que mover la carpeta `cinnamon/` rompe esa segunda ruta.
+- Publicación: `cinnamon/empaquetar.sh` genera `dist/<uuid>/` (ignorado por git) copiando dentro `vaso.py` e `index.html`; esa carpeta se copia al fork de `linuxmint/cinnamon-spices-applets`. `cinnamon/README.md` es el README público del applet (en inglés). No guardar copias de `vaso.py` en el repo.
 - El nombre de la carpeta debe coincidir con el `uuid` de `metadata.json`.
 - Tras editar `applet.js`, recargar con clic derecho en el applet → "Recargar" o reiniciando Cinnamon (Alt+F2, `r`). Los errores salen en Looking Glass (Alt+F2, `lg`) o en `~/.xsession-errors`.
 - Los colores de nivel están duplicados a propósito en `COLORS` (applet) y en las variables CSS de `index.html`: cambiarlos en ambos.

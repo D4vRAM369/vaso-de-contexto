@@ -192,6 +192,24 @@
 
 ---
 
+## Cinnamon Spices
+
+**Definición simple:** La "tienda" gratuita de complementos de Linux Mint. Lo que aparece en la pestaña **Descargar** de la ventana de applets sale de ahí.
+
+**Definición técnica:** Un repositorio de GitHub por tipo de complemento (`linuxmint/cinnamon-spices-applets` para applets). Se publica con un pull request; cada applet es una carpeta `<uuid>/` con `info.json`, `README.md`, `screenshot.png` y `files/<uuid>/` con el código.
+
+**En este proyecto lo usamos para:** Que otras personas instalen el vaso sin clonar el proyecto.
+
+---
+
+## Fork
+
+**Definición simple:** Tu copia personal, en GitHub, de un repositorio ajeno. Cambias tu copia y luego propones esos cambios al original.
+
+**En este proyecto lo usamos para:** Proponer el applet al repositorio de Cinnamon Spices, donde no tenemos permiso de escritura.
+
+---
+
 ## Desklet
 
 **Definición simple:** Como un applet, pero flota sobre el fondo de escritorio en vez de estar en el panel. Lo descartamos porque las ventanas lo tapan.

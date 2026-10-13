@@ -19,10 +19,13 @@ class VasoApplet extends Applet.TextIconApplet {
     constructor(metadata, orientation, panelHeight, instanceId) {
         super(orientation, panelHeight, instanceId);
 
-        // El applet se instala como enlace simbólico a esta carpeta del proyecto, así que
-        // subiendo dos niveles desde ella está vaso.py. Las comillas protegen los espacios
-        // de la ruta ("Vaso de contexto").
-        this.script = GLib.shell_quote(GLib.build_filenamev([metadata.path, '..', '..', 'vaso.py']));
+        // Instalado desde Cinnamon Spices, vaso.py viaja dentro de la carpeta del applet
+        // (lo copia cinnamon/empaquetar.sh). En desarrollo el applet es un enlace simbólico
+        // a esta carpeta del proyecto y vaso.py está dos niveles más arriba. Las comillas
+        // protegen los espacios de la ruta ("Vaso de contexto").
+        const bundled = GLib.build_filenamev([metadata.path, 'vaso.py']);
+        this.script = GLib.shell_quote(GLib.file_test(bundled, GLib.FileTest.EXISTS)
+            ? bundled : GLib.build_filenamev([metadata.path, '..', '..', 'vaso.py']));
         this.iconDir = GLib.build_filenamev([GLib.get_user_cache_dir(), 'vaso-contexto']);
         GLib.mkdir_with_parents(this.iconDir, 0o755);
         this.level = null;

@@ -78,6 +78,20 @@ El diario no dice de qué tamaño es el vaso de cada sesión. Regla: si alguna v
 
 La regla de la Decisión 3 se mantiene: el applet tampoco piensa. Ya hay dos "salas" (página y applet) y una sola "cocina".
 
+## Decisión 10 — Publicar el applet: ¿un repositorio o dos?
+
+Para que cualquiera con Linux Mint pueda instalar el applet desde **Applets → Descargar**, hay que subirlo a Cinnamon Spices (ver glosario). Eso obliga a que una copia viva en el repositorio de Mint. La duda es dónde vive el original.
+
+| Un repositorio (este) + el fork de Spices | Repositorio propio para el applet |
+|---|---|
+| ✅ Una sola fuente de verdad: `vaso.py` existe una vez | ❌ `vaso.py` duplicado en dos sitios que hay que mantener iguales |
+| ✅ Un cambio en el formato del diario se arregla en un sitio | ❌ Dos historiales, dos listas de incidencias |
+| ❌ Hay que copiar a mano al fork en cada versión | ✅ El applet se ve como proyecto independiente |
+
+**Elegido: un repositorio.** El applet no es un programa aparte: es una "sala" más de la misma "cocina" (Decisión 9). Separarlo partiría en dos algo que cambia junto. El fork de `linuxmint/cinnamon-spices-applets` no cuenta como segundo repositorio nuestro: es solo el escaparate, y lo que va allí lo fabrica `cinnamon/empaquetar.sh`.
+
+Consecuencia: Spices solo instala lo que hay dentro de `files/<uuid>/`, así que el paquete lleva dentro una copia de `vaso.py` e `index.html`. Esa copia **se genera**, no se guarda en git (`dist/` está en `.gitignore`).
+
 ## Los umbrales
 
 | Nivel | Desde | Consejo |

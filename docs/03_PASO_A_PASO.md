@@ -303,6 +303,53 @@ Sin esa condición avisaría cada 10 segundos. `this.level !== null` evita el av
 
 ---
 
+## Sesión 2 — 14 de octubre de 2026
+
+## Paso 11: Preparar el applet para Cinnamon Spices
+
+**Problema:** el applet buscaba `vaso.py` dos carpetas por encima de la suya. Eso funciona en desarrollo (el applet es un enlace simbólico al proyecto), pero Cinnamon Spices solo instala la carpeta del applet: esas dos carpetas de arriba no existen en el equipo de otra persona.
+
+**Analogía:** una receta que dice "coge la sal del armario de mi cocina" solo sirve en mi casa. Para repartirla hay que meter la sal en la caja.
+
+### Instrucciones
+
+**a) El applet mira primero dentro de su carpeta** y, si no encuentra `vaso.py`, usa la ruta de desarrollo:
+
+```js
+const bundled = GLib.build_filenamev([metadata.path, 'vaso.py']);
+this.script = GLib.shell_quote(GLib.file_test(bundled, GLib.FileTest.EXISTS)
+    ? bundled : GLib.build_filenamev([metadata.path, '..', '..', 'vaso.py']));
+```
+
+**b) Un script monta el paquete** con la forma que pide Spices:
+
+```bash
+cinnamon/empaquetar.sh
+```
+
+Resultado en `dist/vaso-contexto@d4vram/`:
+
+```
+info.json            ← autor (usuario de GitHub)
+README.md            ← copia de cinnamon/README.md, en inglés
+screenshot.png       ← copia de cinnamon/screenshot.png
+files/vaso-contexto@d4vram/
+    metadata.json, applet.js, icon.png
+    vaso.py, index.html   ← copiados desde la raíz del proyecto
+```
+
+`index.html` también viaja porque el botón "Abrir página completa" arranca `vaso.py`, y este busca la página junto a sí mismo.
+
+**c) Icono y versión.** `icon.png` es lo que se ve en la lista de applets; se generó una vez a partir del mismo dibujo SVG del vaso. `metadata.json` gana el campo `version`.
+
+**d) Enviarlo** (se hace a mano, fuera de este proyecto): fork de `linuxmint/cinnamon-spices-applets`, copiar `dist/vaso-contexto@d4vram` a su raíz, ejecutar allí `./validate-spice vaso-contexto@d4vram`, y abrir el pull request.
+
+> ⚠️ **Errores comunes:** editar los archivos de `dist/`. Se borran y regeneran en cada empaquetado; los cambios se hacen en el proyecto.
+
+**Verificación:** con el paquete generado, `node --check` del applet, `vaso.py --test` (`ok`) y `vaso.py --json` ejecutados **desde la copia de `dist/`** funcionan. **Sin verificar:** el validador de Spices y la instalación real desde la pestaña Descargar. Falta la captura `cinnamon/screenshot.png`.
+
+---
+
 ## Resumen de Sesión 1 — 13/10/2026
 
 **Progreso:** de carpeta vacía a herramienta funcionando: servidor, vaso animado, indicadores, consejos por reglas, selector de sesión, BYOK, repositorio git y applet de Cinnamon.
