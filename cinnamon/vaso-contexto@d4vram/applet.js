@@ -32,9 +32,11 @@ class VasoApplet extends Applet.TextIconApplet {
         this.menuManager.addMenu(this.menu);
 
         // Líneas de solo lectura del desplegable; se rellenan en cada refresco.
+        // No usamos `reactive: false`: Cinnamon lo trata como "desactivado" y atenúa el texto
+        // hasta hacerlo ilegible. Quitamos solo el resaltado y la acción al pulsar.
         this.rows = {};
         for (const key of ['session', 'advice', 'text', 'extras', 'stats']) {
-            const item = new PopupMenu.PopupMenuItem('', { reactive: false });
+            const item = new PopupMenu.PopupMenuItem('', { hover: false, activate: false });
             item.label.clutter_text.line_wrap = true;
             item.label.set_style('max-width: 24em;' + (key === 'advice' ? ' font-weight: bold;' : ''));
             this.menu.addMenuItem(item);
@@ -102,7 +104,7 @@ class VasoApplet extends Applet.TextIconApplet {
         this.rows.stats.label.set_text(
             `${fmt(s.used)} de ${fmt(s.limit)} tokens · ${s.turns} turnos\n` +
             `+${fmt(s.growth)} por turno` +
-            (s.turns_left == null ? '' : ` · ≈ ${s.turns_left} turnos de margen`) +
+            (s.turns_left == null ? '' : ` · ≈ ${s.turns_left} ${s.turns_left === 1 ? 'turno' : 'turnos'} de margen`) +
             `\n${s.compactions} compactaciones · caché ${s.cache_pct}%`);
 
         // Avisar solo al subir a "compacta ya" o "sesión nueva", no en cada refresco.

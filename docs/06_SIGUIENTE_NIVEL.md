@@ -3,7 +3,6 @@
 ## Pendiente de verificar
 
 - **Llamada real a los proveedores de IA.** El código está escrito pero no se ha probado con una key. Los nombres de modelo por defecto pueden haber caducado.
-- **Applet cargado en el panel.** Sintaxis y funciones comprobadas, pero falta verlo funcionando en Cinnamon.
 - **Windows.** Está escrito para ser portable (`pathlib`, sin dependencias), pero solo se ha ejecutado en Linux.
 
 ## Simplificaciones conscientes

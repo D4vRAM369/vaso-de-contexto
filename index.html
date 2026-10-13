@@ -191,7 +191,7 @@ function render(s) {
   $('b1').style.width = Math.min(pct, 100) + '%';              $('b1v').textContent = pct + '%';
   $('b2').style.width = s.cache_pct + '%';                     $('b2v').textContent = s.cache_pct + '%';
   $('b3').style.width = margin * 100 + '%';
-  $('b3v').textContent = s.turns_left == null ? '–' : `≈ ${s.turns_left} turnos`;
+  $('b3v').textContent = s.turns_left == null ? '–' : `≈ ${s.turns_left} ${s.turns_left === 1 ? 'turno' : 'turnos'}`;
 
   $('s-turns').textContent = s.turns;
   $('s-growth').textContent = '+' + fmt(s.growth);

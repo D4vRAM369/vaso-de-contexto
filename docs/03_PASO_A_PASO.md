@@ -299,7 +299,7 @@ Sin esa condición avisaría cada 10 segundos. `this.level !== null` evita el av
 
 > 💡 **Nota para aprendices:** el JavaScript de Cinnamon (CJS) no es el del navegador ni Node. No hay `document`, ni `fetch`, ni `require`. Las piezas se traen con `imports.ui.applet`, `imports.gi.GLib`, etc.
 
-**Verificación:** hecha la sintaxis (`node --check`), la salida `--json` y la existencia de cada función usada en el Cinnamon 6.6.9 instalado. **Pendiente:** verlo cargado en el panel (hay que añadirlo a mano, ver `01_SETUP.md`).
+**Verificación:** hecha la sintaxis (`node --check`), la salida `--json` y la existencia de cada función usada en el Cinnamon 6.6.9 instalado. Cargado en el panel el 14/10/2026: funciona; el texto del desplegable salía atenuado (ver `05_ERRORES_Y_SOLUCIONES.md`).
 
 ---
 

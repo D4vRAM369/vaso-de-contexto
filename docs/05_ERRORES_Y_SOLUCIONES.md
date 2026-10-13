@@ -65,6 +65,27 @@ A  .omc/state/last-tool-error.json
 
 ---
 
+## Error: el texto del desplegable del applet salía casi invisible
+
+**Fecha:** 14/10/2026
+**Contexto:** Primera vez que el applet se cargó en el panel. Funcionaba, pero las líneas del desplegable se veían gris oscuro sobre negro.
+
+**El síntoma:** el consejo y las métricas apenas se leían; solo "Abrir página completa" se veía bien.
+
+**Por qué ocurrió:** Las líneas informativas se crearon con `{ reactive: false }` para que no respondieran al ratón. Pero para Cinnamon "no reactivo" significa "desactivado", como una opción de menú en gris que no puedes pulsar, y el tema lo pinta atenuado a propósito.
+
+**Cómo se resolvió:** Se dejan reactivas y se apaga solo lo que molestaba:
+
+```js
+new PopupMenu.PopupMenuItem('', { hover: false, activate: false });
+```
+
+**Qué aprendimos:**
+- Las comprobaciones previas (sintaxis, que las funciones existan) no podían ver esto. Hay fallos que solo aparecen mirando la pantalla.
+- Una opción puede hacer más de lo que su nombre sugiere: `reactive: false` no era "ignora el ratón", era "estoy deshabilitado", con su estilo incluido.
+
+---
+
 ## Error: `grep: contador máximo no válido`
 
 **Fecha:** 13/10/2026
