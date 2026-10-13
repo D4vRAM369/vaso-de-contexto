@@ -3,6 +3,7 @@
 ## Pendiente de verificar
 
 - **Llamada real a los proveedores de IA.** El código está escrito pero no se ha probado con una key. Los nombres de modelo por defecto pueden haber caducado.
+- **Applet cargado en el panel.** Sintaxis y funciones comprobadas, pero falta verlo funcionando en Cinnamon.
 - **Windows.** Está escrito para ser portable (`pathlib`, sin dependencias), pero solo se ha ejecutado en Linux.
 
 ## Simplificaciones conscientes
@@ -20,6 +21,8 @@
 - **Otras herramientas:** leer sesiones de Codex (`~/.codex`) y Gemini CLI (`~/.gemini`). Cada una tiene su formato: haría falta un lector por herramienta que devuelva las mismas métricas.
 - **Resumen listo para pegar:** que la IA genere el resumen con el que abrir una sesión nueva.
 - **Notificación de escritorio** al cruzar un umbral, para no tener que mirar la página.
+- **Ajustes del applet:** intervalo de refresco y avisos configurables con `settings-schema.json`.
+- **Equivalente en Windows:** un icono en la bandeja del sistema que consuma el mismo `--json`.
 - **Vaso en la terminal:** una statusline de Claude Code que reutilice `parse()` y `advise()`.
 - **Coste:** traducir tokens a dinero según el modelo.
 - **Varios vasos a la vez:** una fila con todas las sesiones activas.

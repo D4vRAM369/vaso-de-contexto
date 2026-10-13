@@ -127,6 +127,24 @@ Tus conversaciones pueden contener cosas privadas. Dos precauciones, cada una de
 
 ---
 
+## Lección 10 — Una cocina, dos salas
+
+El vaso en una página está bien, pero hay que ir a mirarlo. Queríamos verlo sin buscarlo: en la barra de tareas.
+
+En Linux Mint, los iconos del panel son mini programas llamados **applets**. Hicimos uno.
+
+Aquí se cobra la decisión de la Lección 4. Como toda la inteligencia estaba en la cocina, el applet no tuvo que aprender a leer diarios ni a decidir consejos. Solo hubo que abrirle a la cocina una ventanilla nueva: un modo en el que el programa, en vez de atender al navegador, **dice el resultado en voz alta y se va**. El applet lo escucha cada 10 segundos.
+
+Dos cosas que enseña este paso:
+
+**Medir antes de decidir.** ¿Arrancar un programa cada 10 segundos no es un derroche? En vez de opinar, lo cronometramos: 0,13 segundos con la conversación más grande del equipo. Decisión tomada con un dato.
+
+**No bloquear al anfitrión.** Un applet vive dentro del escritorio. Si se queda esperando algo, el panel entero se congela. Por eso encarga la tarea y sigue; cuando hay respuesta, le avisan. Eso es trabajar de forma **asíncrona**: pedir en la barra y sentarte, en lugar de quedarte de pie bloqueando la cola.
+
+> 🧠 **Para pensar:** si mañana quisiéramos un icono en la bandeja de Windows, ¿qué habría que escribir de nuevo y qué no?
+
+---
+
 ## Repaso
 
 | Idea | En una frase |
@@ -139,6 +157,8 @@ Tus conversaciones pueden contener cosas privadas. Dos precauciones, cada una de
 | SVG | Dibujos escritos como texto |
 | Test | Un programa que vigila a otro |
 | BYOK | Tú pones la llave |
+| Applet | Mini programa del panel |
+| Asíncrono | Encargar y seguir, sin quedarse esperando |
 
 ## Preguntas de autoevaluación
 

@@ -56,6 +56,28 @@ En `localStorage` del navegador. No en un archivo del proyecto (acabaría subida
 
 El diario no dice de qué tamaño es el vaso de cada sesión. Regla: si alguna vez pasó de 200 000 tokens, es de 1M; si no, suponemos 200k. Como es una suposición, en Ajustes se puede forzar.
 
+## Decisión 8 — La miniapp de Cinnamon: ¿applet o desklet?
+
+| Applet de panel | Desklet de escritorio |
+|---|---|
+| ✅ Siempre visible, también con ventanas maximizadas | ✅ Espacio para dibujar un vaso grande |
+| ✅ Ocupa lo que un icono | ❌ Queda tapado por las ventanas justo cuando trabajas |
+| ❌ Poco espacio: icono y un número | |
+
+**Elegido: applet.** Un aviso que no se ve cuando lo necesitas no avisa.
+
+## Decisión 9 — ¿Cómo obtiene los datos el applet?
+
+| Preguntar al servidor web | Ejecutar `vaso.py --json` |
+|---|---|
+| ✅ Reutiliza `/api/state` | ✅ Funciona sin tener nada arrancado |
+| ❌ Si el servidor no está en marcha, el applet no muestra nada | ✅ Reutiliza las mismas funciones |
+| ❌ Habría que arrancarlo y vigilarlo desde el applet | ❌ Lanza un proceso Python cada 10 s |
+
+**Elegido: ejecutar el script.** Medimos antes de decidir: leer la sesión más grande del equipo tarda 0,13 s. Con ese coste, un proceso cada 10 segundos es despreciable y nos ahorra toda la gestión del servidor.
+
+La regla de la Decisión 3 se mantiene: el applet tampoco piensa. Ya hay dos "salas" (página y applet) y una sola "cocina".
+
 ## Los umbrales
 
 | Nivel | Desde | Consejo |

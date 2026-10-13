@@ -182,6 +182,48 @@
 
 ---
 
+## Applet (Cinnamon)
+
+**Definición simple:** Un mini programa que vive en la barra de tareas de Linux Mint: el reloj, el volumen y la red son applets.
+
+**Definición técnica:** Una carpeta con `metadata.json` y `applet.js` que el escritorio Cinnamon carga dentro de su propio proceso.
+
+**En este proyecto lo usamos para:** Tener el vaso siempre a la vista en el panel.
+
+---
+
+## Desklet
+
+**Definición simple:** Como un applet, pero flota sobre el fondo de escritorio en vez de estar en el panel. Lo descartamos porque las ventanas lo tapan.
+
+---
+
+## Enlace simbólico (symlink)
+
+**Definición simple:** Un acceso directo: un nombre en una carpeta que apunta a un archivo o carpeta que está en otro sitio.
+
+**En este proyecto lo usamos para:** Que Cinnamon encuentre el applet en su carpeta de applets mientras el código real sigue en el proyecto.
+
+---
+
+## Asíncrono
+
+**Definición simple:** Encargar una tarea y seguir a lo tuyo; cuando termina, te avisan.
+
+**Analogía:** Pedir en un bar y que te llamen por tu nombre, en vez de quedarte plantado en la barra bloqueando la cola.
+
+**En este proyecto lo usamos para:** Que el panel no se congele mientras Python lee la sesión.
+
+---
+
+## stdout
+
+**Definición simple:** El "altavoz" por el que un programa de terminal suelta su resultado. Otro programa puede escucharlo.
+
+**En este proyecto lo usamos para:** `vaso.py --json` imprime por stdout y el applet lo recoge.
+
+---
+
 ## Subagente (sidechain)
 
 **Definición simple:** Un ayudante que Claude lanza para una subtarea, con su propio vaso aparte.

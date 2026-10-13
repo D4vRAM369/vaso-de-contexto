@@ -67,7 +67,25 @@ $env:VASO_PORT = 9000; python vaso.py
 
 > ⚠️ **Errores comunes:** si cambias de puerto, el navegador lo trata como una página distinta y no verá la key que guardaste con el puerto anterior. Tendrás que pegarla otra vez.
 
-## 5. (Opcional) Conseguir una API key gratuita
+## 5. (Opcional, solo Linux Mint Cinnamon) Instalar el applet de panel
+
+El applet muestra el vaso y el porcentaje en la barra de tareas, sin tener la página abierta.
+
+Desde la carpeta del proyecto, crea un enlace simbólico en la carpeta donde Cinnamon busca applets:
+
+```bash
+ln -sfn "$PWD/cinnamon/vaso-contexto@d4vram" ~/.local/share/cinnamon/applets/vaso-contexto@d4vram
+```
+
+Después: clic derecho en el panel → **Applets** → pestaña **Gestionar** → busca "Vaso de contexto" → botón **+**.
+
+**Verificación:** aparece un vaso con un porcentaje en el panel. Al pulsarlo se despliega el consejo.
+
+> ⚠️ **Errores comunes:** si mueves o renombras la carpeta del proyecto, el enlace queda roto y el applet deja de cargar. Repite el comando desde la nueva ubicación.
+
+> 💡 **Nota para aprendices:** usamos un enlace y no una copia para que cualquier cambio en el código del proyecto se refleje en el applet sin reinstalar.
+
+## 6. (Opcional) Conseguir una API key gratuita
 
 Solo si quieres el consejo con IA. Con una basta:
 

@@ -43,6 +43,28 @@ ups = [b - a for a, b in zip(recent, recent[1:]) if b > a]
 
 ---
 
+## Error: el primer commit incluyó archivos que no eran del proyecto
+
+**Fecha:** 13/10/2026
+**Contexto:** `git init` seguido de `git add -A` y `git commit`.
+
+**El síntoma:**
+```
+A  .omc/state/agent-replay-62b6d587-….jsonl
+A  .omc/state/last-tool-error.json
+```
+
+**Por qué ocurrió:** `git add -A` significa "añade todo lo que haya en la carpeta". Una herramienta instalada en el equipo (oh-my-claudecode) había creado su carpeta de estado `.omc/` dentro del proyecto, y entró en el commit.
+
+**Cómo se resolvió:** Se añadió `.omc/` a `.gitignore`, se sacó del índice con `git rm -r --cached .omc` (lo quita de git sin borrarlo del disco) y se rehízo el commit con `git commit --amend`.
+
+**Qué aprendimos:**
+- Lee siempre la lista de `git status` antes de confirmar un commit. El fallo estaba a la vista.
+- `--amend` reescribe el último commit. Es seguro mientras no lo hayas subido a ningún sitio; después, ya no.
+- Si en vez de un archivo de estado hubiera sido una API key, sacarla del historial ya publicado es mucho más difícil. El `.gitignore` se escribe antes del primer `add`.
+
+---
+
 ## Error: `grep: contador máximo no válido`
 
 **Fecha:** 13/10/2026

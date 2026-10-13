@@ -27,6 +27,7 @@ Funciona igual en Linux y en Windows y no instala nada: solo necesita Python.
 | Python | 3.9 o superior (probado en 3.12) | Servidor local y lectura de las sesiones |
 | HTML + CSS + JavaScript | Sin frameworks | La página con el vaso |
 | SVG | — | El dibujo del vaso y el agua |
+| CJS (JavaScript de Cinnamon) | Cinnamon 6.x | Applet de panel en Linux Mint |
 | APIs de Gemini / Groq / OpenRouter | Formato "chat completions" | Consejo opcional con IA |
 
 ## Estructura del proyecto
@@ -35,6 +36,7 @@ Funciona igual en Linux y en Windows y no instala nada: solo necesita Python.
 Vaso de contexto/
 ├── vaso.py        ← el servidor: lee, calcula y aconseja
 ├── index.html     ← la página: dibuja lo que el servidor le dice
+├── cinnamon/      ← applet para el panel de Linux Mint Cinnamon
 ├── CLAUDE.md      ← guía para Claude Code al trabajar en este repo
 └── docs/          ← esta documentación
 ```

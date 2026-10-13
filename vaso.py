@@ -317,12 +317,24 @@ def test():
 
 
 if __name__ == "__main__":
+    url = f"http://127.0.0.1:{PORT}"
     if "--test" in sys.argv:
         test()
+    elif "--json" in sys.argv:
+        # Para el applet de Cinnamon: el estado de la sesión más reciente, sin servidor.
+        p = resolve("")
+        s = state(p) if p else {"error": f"No hay sesiones en {ROOT}"}
+        s.pop("msgs", None)
+        print(json.dumps(s))
     else:
-        # Solo 127.0.0.1: los transcripts son privados y no deben verse desde la red.
-        srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-        url = f"http://127.0.0.1:{PORT}"
+        try:
+            # Solo 127.0.0.1: los transcripts son privados y no deben verse desde la red.
+            srv = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
+        except OSError:
+            # Puerto ocupado: lo normal es que ya haya un vaso en marcha. Abrimos ese.
+            print(f"El puerto {PORT} ya está en uso; abriendo {url}")
+            webbrowser.open(url)
+            sys.exit(0)
         print(f"Vaso de contexto en {url}  (Ctrl+C para salir)\nLeyendo {ROOT}")
         if "--no-browser" not in sys.argv:
             webbrowser.open(url)

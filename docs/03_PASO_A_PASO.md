@@ -216,9 +216,96 @@ Una función, tres proveedores. La key viaja en la cabecera `Authorization: Bear
 
 ---
 
+## Paso 8: Primer commit con git
+
+Se inicializó el repositorio y se hizo el primer commit. Ver el error de `.omc/` en `05_ERRORES_Y_SOLUCIONES.md`: `git add -A` añade *todo*, también lo que no es tuyo.
+
+---
+
+## Paso 9: Una salida para otros programas (`--json`)
+
+**Qué vamos a hacer:** Que `vaso.py` pueda imprimir el estado y salir, sin arrancar el servidor.
+
+**Por qué lo hacemos así:** El applet necesita los mismos datos que la página. En vez de reescribir la lectura en otro lenguaje, le damos al programa una segunda puerta de salida.
+
+```python
+elif "--json" in sys.argv:
+    p = resolve("")
+    s = state(p) if p else {"error": f"No hay sesiones en {ROOT}"}
+    s.pop("msgs", None)
+    print(json.dumps(s))
+```
+
+Son las mismas funciones `resolve` y `state` del servidor. Cero lógica nueva.
+
+**Verificación:** `python3 vaso.py --json` imprime una línea que empieza por `{"title": ...`.
+
+---
+
+## Paso 10: El applet de Cinnamon
+
+**Qué vamos a hacer:** Un icono en el panel con el vaso y el porcentaje, y un desplegable con el consejo.
+
+**Por qué lo hacemos así:** La página obliga a ir a mirarla. El panel está siempre a la vista.
+
+**Resultado esperado:** `cinnamon/vaso-contexto@d4vram/` con dos archivos.
+
+### Instrucciones
+
+Un applet de Cinnamon es una carpeta con, como mínimo:
+
+- `metadata.json`: la ficha (nombre, descripción y un identificador único, el `uuid`). **La carpeta debe llamarse igual que el `uuid`.**
+- `applet.js`: el código. Cinnamon busca en él una función `main()` que devuelva el applet.
+
+El esqueleto:
+
+```js
+class VasoApplet extends Applet.TextIconApplet {   // un applet con icono y texto
+    constructor(metadata, orientation, panelHeight, instanceId) {
+        super(orientation, panelHeight, instanceId);
+        this.refresh();
+        this.timer = Mainloop.timeout_add_seconds(10, () => { this.refresh(); return true; });
+    }
+}
+```
+
+`return true` le dice al temporizador "vuelve a llamarme"; con `false` se pararía.
+
+Pedir los datos es ejecutar el script y leer lo que imprime:
+
+```js
+Util.spawnCommandLineAsyncIO(`python3 ${this.script} --json`, (stdout, stderr) => {
+    const s = JSON.parse(stdout);
+    this.render(s);
+});
+```
+
+"Async" importa: el applet vive dentro del propio escritorio. Si esperase bloqueado a que Python termine, **se congelaría todo el panel** ese rato.
+
+Dos detalles con trampa:
+
+**a) La ruta tiene espacios.** La carpeta se llama "Vaso de contexto". Sin comillas, la terminal entendería tres argumentos. `GLib.shell_quote()` las pone bien.
+
+**b) El icono que se llena.** Se genera un SVG pequeño según el nivel y se guarda en la caché del usuario con un nombre distinto por nivel y color (`vaso-watch-11.svg`). El nombre distinto es necesario: Cinnamon recuerda las imágenes por su ruta y, si se sobrescribiera siempre el mismo archivo, seguiría mostrando la antigua.
+
+Por último, una notificación de escritorio, pero solo al **subir** a "compacta ya" o "sesión nueva":
+
+```js
+if (this.level !== null && RANK[a.level] > RANK[this.level] && RANK[a.level] >= RANK.compact)
+    Main.notify(`Vaso de contexto: ${a.title}`, a.text);
+```
+
+Sin esa condición avisaría cada 10 segundos. `this.level !== null` evita el aviso nada más arrancar.
+
+> 💡 **Nota para aprendices:** el JavaScript de Cinnamon (CJS) no es el del navegador ni Node. No hay `document`, ni `fetch`, ni `require`. Las piezas se traen con `imports.ui.applet`, `imports.gi.GLib`, etc.
+
+**Verificación:** hecha la sintaxis (`node --check`), la salida `--json` y la existencia de cada función usada en el Cinnamon 6.6.9 instalado. **Pendiente:** verlo cargado en el panel (hay que añadirlo a mano, ver `01_SETUP.md`).
+
+---
+
 ## Resumen de Sesión 1 — 13/10/2026
 
-**Progreso:** de carpeta vacía a herramienta funcionando: servidor, vaso animado, indicadores, consejos por reglas, selector de sesión y BYOK.
+**Progreso:** de carpeta vacía a herramienta funcionando: servidor, vaso animado, indicadores, consejos por reglas, selector de sesión, BYOK, repositorio git y applet de Cinnamon.
 
 **Conceptos nuevos:** tokens y contexto, JSONL, servidor local, SVG con `clipPath`, polling, BYOK.
 
@@ -226,6 +313,6 @@ Una función, tres proveedores. La key viaja en la cabecera `Authorization: Bear
 
 **Verificado:** autotest `ok`; la página muestra datos reales de la sesión en curso, sin errores en consola.
 
-**Sin verificar:** la llamada a los proveedores de IA (no había key) y la ejecución en Windows.
+**Sin verificar:** la llamada a los proveedores de IA (no había key), la ejecución en Windows y el applet cargado en un panel real.
 
 **Próximo paso:** probar con una key gratuita y en Windows.
