@@ -368,8 +368,10 @@ Al abrir el pull request, un robot del repositorio de Mint repasó el código y 
 
 ```js
 Util.spawn(['python3', this.script]);
-Util.spawnCommandLineAsyncIO(null, callback, { argv: ['python3', this.script, '--json'] });
+Gio.Subprocess.new(['python3', this.script, '--json'], flags);
 ```
+
+(Primer intento: `Util.spawnCommandLineAsyncIO` con su opción `argv`. Funcionaba, pero el robot busca por el **nombre** de la función y seguía avisando. Usar `Gio.Subprocess` directamente es lo mismo que hacía esa función por dentro, sin el falso positivo.)
 
 **Analogía:** dictar un pedido de corrido ("dos cafés con leche y uno solo") frente a entregar una lista con una línea por producto. En la lista no hay dudas de dónde acaba cada cosa, aunque el nombre lleve espacios.
 
