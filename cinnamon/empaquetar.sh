@@ -9,9 +9,10 @@ OUT="dist/$UUID"
 
 rm -rf "$OUT"
 mkdir -p "$OUT/files"
-cp -r "cinnamon/$UUID" "$OUT/files/"
 # Spices solo instala files/<uuid>/: lo que el applet necesita tiene que ir dentro.
-cp vaso.py index.html "$OUT/files/$UUID/"
+# -L convierte el enlace simbólico vaso.py en una copia real del archivo.
+cp -rL "cinnamon/$UUID" "$OUT/files/"
+cp index.html "$OUT/files/$UUID/"
 cp cinnamon/README.md "$OUT/README.md"
 echo '{"author": "D4vRAM369"}' > "$OUT/info.json"
 

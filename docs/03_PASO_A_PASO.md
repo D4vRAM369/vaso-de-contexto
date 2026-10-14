@@ -360,6 +360,28 @@ exiftool -all= -overwrite_original cinnamon/screenshot.png
 
 ---
 
+## Paso 12: Atender al revisor automático de Spices
+
+Al abrir el pull request, un robot del repositorio de Mint repasó el código y dejó cuatro avisos de dos tipos.
+
+**a) Comandos como texto de shell.** Lanzábamos `python3 "ruta" --json` como una frase que interpreta una shell, y por eso había que entrecomillar la ruta. La alternativa es una **lista de argumentos** (argv): cada pieza por separado, sin shell de por medio.
+
+```js
+Util.spawn(['python3', this.script]);
+Util.spawnCommandLineAsyncIO(null, callback, { argv: ['python3', this.script, '--json'] });
+```
+
+**Analogía:** dictar un pedido de corrido ("dos cafés con leche y uno solo") frente a entregar una lista con una línea por producto. En la lista no hay dudas de dónde acaba cada cosa, aunque el nombre lleve espacios.
+
+**b) Preguntar al disco de forma síncrona.** `GLib.file_test()` detiene todo el panel hasta que el disco responde. Se usaba en dos sitios:
+
+- Para decidir dónde estaba `vaso.py`. Solución: que esté **siempre** dentro de la carpeta del applet. En el proyecto es un enlace simbólico (`vaso.py -> ../../vaso.py`); `empaquetar.sh` lo convierte en copia real con `cp -rL`. Ya no hay nada que preguntar.
+- Para no reescribir un icono ya creado. Solución: recordarlo en memoria (`this.icons`, un `Set`) y escribir el archivo de forma asíncrona con `Gio`; el icono se coloca cuando la escritura termina.
+
+**Verificación:** probado en `cjs` (el motor de Cinnamon) y recargando el applet en el panel real: carga sin errores y escribe los iconos. `./validate-spice` sigue sin errores.
+
+---
+
 ## Resumen de Sesión 1 — 13/10/2026
 
 **Progreso:** de carpeta vacía a herramienta funcionando: servidor, vaso animado, indicadores, consejos por reglas, selector de sesión, BYOK, repositorio git y applet de Cinnamon.

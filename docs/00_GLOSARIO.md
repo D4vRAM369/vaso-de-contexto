@@ -210,6 +210,14 @@
 
 ---
 
+## argv (lista de argumentos)
+
+**Definición simple:** La forma de lanzar un programa dándole cada dato por separado (`['python3', 'vaso.py', '--json']`) en lugar de una frase que alguien tiene que trocear.
+
+**En este proyecto lo usamos para:** Que el applet ejecute `vaso.py` sin pasar por una shell, aunque la ruta tenga espacios.
+
+---
+
 ## Desklet
 
 **Definición simple:** Como un applet, pero flota sobre el fondo de escritorio en vez de estar en el panel. Lo descartamos porque las ventanas lo tapan.
