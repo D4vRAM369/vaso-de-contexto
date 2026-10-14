@@ -346,7 +346,17 @@ files/vaso-contexto@d4vram/
 
 > ⚠️ **Errores comunes:** editar los archivos de `dist/`. Se borran y regeneran en cada empaquetado; los cambios se hacen en el proyecto.
 
-**Verificación:** con el paquete generado, `node --check` del applet, `vaso.py --test` (`ok`) y `vaso.py --json` ejecutados **desde la copia de `dist/`** funcionan. **Sin verificar:** el validador de Spices y la instalación real desde la pestaña Descargar. Falta la captura `cinnamon/screenshot.png`.
+**Verificación:** con el paquete generado, `node --check` del applet, `vaso.py --test` (`ok`) y `vaso.py --json` ejecutados **desde la copia de `dist/`** funcionan. El validador oficial (`./validate-spice`) da `No errors found` una vez añadida la captura. **Sin verificar:** la instalación real desde la pestaña Descargar.
+
+**e) Captura sin metadatos.** Una imagen puede llevar datos ocultos (programa usado, fecha, a veces ubicación). Antes de publicarla se limpian:
+
+```bash
+exiftool -all= -overwrite_original cinnamon/screenshot.png
+```
+
+`-all=` significa "todas las etiquetas, a vacío"; `-overwrite_original` evita que deje una copia `_original` al lado.
+
+**f) Licencia.** Spices exige código abierto: se añade `LICENSE` (MIT) en la raíz.
 
 ---
 
