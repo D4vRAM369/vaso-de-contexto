@@ -12,7 +12,15 @@ mkdir -p "$OUT/files"
 # Spices solo instala files/<uuid>/: lo que el applet necesita tiene que ir dentro.
 # -L convierte el enlace simbólico vaso.py en una copia real del archivo.
 cp -rL "cinnamon/$UUID" "$OUT/files/"
-cp index.html "$OUT/files/$UUID/"
+# El consejo con IA (BYOK) no va en el paquete: Spices no quiere applets que envíen datos
+# del usuario a servicios externos. Se borran los bloques marcados byok:inicio … byok:fin.
+for f in vaso.py index.html; do
+    sed '/byok:inicio/,/byok:fin/d' "$f" > "$OUT/files/$UUID/$f"
+done
+if grep -rniE 'byok|urllib\.(request|error)|PROVIDERS|/api/advice|openrouter|api key' "$OUT/files"; then
+    echo "ERROR: queda código del consejo con IA en el paquete" >&2
+    exit 1
+fi
 cp cinnamon/README.md "$OUT/README.md"
 echo '{"author": "D4vRAM369"}' > "$OUT/info.json"
 

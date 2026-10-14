@@ -134,6 +134,7 @@
           <option value="1000000">1M tokens</option>
         </select>
       </label>
+      <!-- byok:inicio -->
       <label>Proveedor de consejos con IA
         <select id="prov">
           <option value="gemini">Google Gemini (aistudio.google.com)</option>
@@ -144,9 +145,12 @@
       <label>API key <input id="key" type="password" autocomplete="off" placeholder="Pega tu key gratuita"></label>
       <label>Modelo <input id="model" autocomplete="off"></label>
       <label>&nbsp;<button id="ask">Pedir consejo con IA</button></label>
+      <!-- byok:fin -->
     </div>
+    <!-- byok:inicio -->
     <p class="note">La key se guarda solo en este navegador. Al pedir consejo, las métricas y tus últimos 6 mensajes
       (recortados) se envían al proveedor elegido. Sin key, los consejos salen de reglas locales y no sale nada de tu equipo.</p>
+    <!-- byok:fin -->
   </details>
 </main>
 
@@ -157,8 +161,10 @@ const store = {
   get: k => { try { return localStorage.getItem('vaso.' + k) || ''; } catch { return ''; } },
   set: (k, v) => { try { localStorage.setItem('vaso.' + k, v); } catch {} },
 };
+// byok:inicio
 const MODELS = { gemini: 'gemini-2.5-flash', groq: 'llama-3.3-70b-versatile',
                  openrouter: 'meta-llama/llama-3.3-70b-instruct:free' };
+// byok:fin
 const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'k' : String(n);
 const color = level => getComputedStyle(document.documentElement).getPropertyValue('--' + level).trim();
 
@@ -226,6 +232,7 @@ async function loadSessions() {
   } catch {}
 }
 
+// byok:inicio
 $('ask').onclick = async () => {
   $('ask').disabled = true;
   $('ai').textContent = 'Consultando…';
@@ -246,11 +253,12 @@ function loadProvider() {
   $('model').value = store.get('model.' + p) || MODELS[p];
 }
 $('prov').value = store.get('prov') || 'gemini';
-$('limit').value = store.get('limit') || '0';
 loadProvider();
 $('prov').onchange = () => { store.set('prov', $('prov').value); loadProvider(); };
 $('key').onchange = () => store.set('key.' + $('prov').value, $('key').value.trim());
 $('model').onchange = () => store.set('model.' + $('prov').value, $('model').value.trim());
+// byok:fin
+$('limit').value = store.get('limit') || '0';
 $('limit').onchange = () => { store.set('limit', $('limit').value); refresh(); };
 $('sel').onchange = () => { $('ai').textContent = ''; refresh(); };
 

@@ -51,7 +51,7 @@ ln -sfn "$PWD/cinnamon/vaso-contexto@d4vram" ~/.local/share/cinnamon/applets/vas
 
 Después: clic derecho en el panel → **Applets** → **Gestionar** → "Vaso de contexto" → **+**.
 
-Está enviado a Cinnamon Spices ([linuxmint/cinnamon-spices-applets#9116](https://github.com/linuxmint/cinnamon-spices-applets/pull/9116)); cuando se acepte, se podrá instalar desde la pestaña **Descargar**.
+La versión de Cinnamon Spices no incluye el consejo con IA (su paquete no hace conexiones externas). Está enviada ([linuxmint/cinnamon-spices-applets#9116](https://github.com/linuxmint/cinnamon-spices-applets/pull/9116)); cuando se acepte, se podrá instalar desde la pestaña **Descargar**.
 
 ## Privacidad
 

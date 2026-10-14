@@ -384,6 +384,39 @@ Gio.Subprocess.new(['python3', this.script, '--json'], flags);
 
 ---
 
+## Paso 13: Un paquete sin el botón de IA
+
+**Problema:** queremos dos versiones del mismo programa (con botón de IA y sin él) sin mantener dos copias del código.
+
+**Analogía:** un guion con escenas marcadas con fosforito "solo versión extendida". Hay un único guion; al imprimir la versión corta, se saltan las escenas marcadas.
+
+### Instrucciones
+
+**a) Marcar** cada trozo del botón de IA, en `vaso.py` y en `index.html`:
+
+```python
+# byok:inicio
+def ask_ai(provider, key, model, s):
+    ...
+# byok:fin
+```
+
+En HTML la marca va en un comentario `<!-- byok:inicio -->`; en JavaScript, `// byok:inicio`. Lo único que importa es que el texto aparezca en la línea.
+
+**b) Borrar al empaquetar.** `sed` es un editor de texto por comandos; esta orden significa "borra (`d`) desde la línea que contenga `byok:inicio` hasta la que contenga `byok:fin`":
+
+```bash
+sed '/byok:inicio/,/byok:fin/d' vaso.py > dist/.../vaso.py
+```
+
+**c) Cinturón de seguridad.** Después, el script busca restos (`urllib.request`, `PROVIDERS`, `/api/advice`…) y, si encuentra alguno, se detiene con error. Así un bloque nuevo sin marcar no se cuela en el paquete sin que nos enteremos.
+
+> ⚠️ **Errores comunes:** dejar fuera de las marcas algo que usa lo de dentro. Al borrar el bloque, lo de fuera se queda llamando a algo que ya no existe. Por eso hubo que mover una línea (`$('limit').value = …`) que estaba en medio del bloque.
+
+**Verificación:** la copia recortada pasa `vaso.py --test` y `--json`; no importa `urllib.request`; su JavaScript no tiene errores de sintaxis ni referencias a elementos que ya no existen. La versión completa sigue funcionando en el navegador con su botón. **Sin verificar:** la página recortada abierta en un navegador.
+
+---
+
 ## Resumen de Sesión 1 — 13/10/2026
 
 **Progreso:** de carpeta vacía a herramienta funcionando: servidor, vaso animado, indicadores, consejos por reglas, selector de sesión, BYOK, repositorio git y applet de Cinnamon.

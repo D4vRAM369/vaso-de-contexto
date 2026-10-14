@@ -92,6 +92,20 @@ Para que cualquiera con Linux Mint pueda instalar el applet desde **Applets → 
 
 Consecuencia: Spices solo instala lo que hay dentro de `files/<uuid>/`, así que el paquete lleva dentro una copia de `vaso.py` e `index.html`. Esa copia **se genera**, no se guarda en git (`dist/` está en `.gitignore`).
 
+## Decisión 11 — ¿El consejo con IA va en el applet publicado?
+
+Las normas de Cinnamon Spices piden revisar con lupa cualquier applet que envíe datos del usuario a servicios externos. Nuestro botón de IA envía los últimos mensajes a un proveedor.
+
+| Dejarlo y explicarlo | Quitarlo del paquete |
+|---|---|
+| ✅ Misma funcionalidad en todas partes | ✅ El paquete no hace ninguna conexión externa: nada que objetar |
+| ❌ Riesgo alto de rechazo o de meses de espera | ✅ Menos código que revisar |
+| | ❌ Quien instale desde Spices no tiene el botón |
+
+**Elegido: quitarlo del paquete, no del proyecto.** El código sigue en este repositorio, rodeado de marcas `byok:inicio` … `byok:fin`. Al empaquetar, esos bloques se borran. Quien quiera el botón, usa el proyecto completo.
+
+No sirve "apagarlo" con una opción: el revisor seguiría viendo código de red en el paquete. Tiene que no estar.
+
 ## Los umbrales
 
 | Nivel | Desde | Consejo |

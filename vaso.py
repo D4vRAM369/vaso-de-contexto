@@ -10,8 +10,10 @@ import os
 import sys
 import tempfile
 import time
+# byok:inicio — cinnamon/empaquetar.sh quita estos bloques del paquete de Spices
 import urllib.error
 import urllib.request
+# byok:fin
 import webbrowser
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -27,12 +29,14 @@ HERE = Path(__file__).resolve().parent
 WATCH, COMPACT, NEW = 0.50, 0.70, 0.85
 COLD_CACHE_MIN = 60  # minutos sin actividad a partir de los cuales damos el caché por expirado
 
+# byok:inicio
 # Todos exponen el mismo formato "chat completions", así que basta una función para los tres.
 PROVIDERS = {
     "gemini": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
     "groq": "https://api.groq.com/openai/v1/chat/completions",
     "openrouter": "https://openrouter.ai/api/v1/chat/completions",
 }
+# byok:fin
 
 _cache = {}  # ruta -> ((mtime, tamaño), resultado)
 
@@ -182,6 +186,7 @@ def resolve(rel):
     return p if ok else None
 
 
+# byok:inicio
 def ask_ai(provider, key, model, s):
     """Pide un consejo a un modelo gratuito con la key del usuario (BYOK)."""
     metrics = {k: s[k] for k in ("used", "limit", "turns", "compactions", "growth",
@@ -207,6 +212,7 @@ def ask_ai(provider, key, model, s):
                  "User-Agent": "vaso-de-contexto/0.1"})
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)["choices"][0]["message"]["content"].strip()
+# byok:fin
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -256,6 +262,7 @@ class Handler(BaseHTTPRequestHandler):
         else:
             self.send(404, {"error": "no existe"})
 
+    # byok:inicio
     def do_POST(self):
         if not self.local():
             return
@@ -279,6 +286,7 @@ class Handler(BaseHTTPRequestHandler):
         except (urllib.error.URLError, OSError, KeyError, IndexError, ValueError,
                 TypeError, AttributeError) as e:
             self.send(502, {"error": f"No se pudo consultar a {provider}: {e}"})
+    # byok:fin
 
 
 def test():
